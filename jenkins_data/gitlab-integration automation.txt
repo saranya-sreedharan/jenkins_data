@@ -1,0 +1,169 @@
+sudo docker exec -u root 9c6b6fd9e10c java -jar /jenkins-cli.jar -s http://172.17.0.2:8080/ create-credentials-by-xml system::system::jenkins _ < /home/ubuntu/gitlab_api_token.xml
+
+
+
+sudo docker exec -u root 9c6b6fd9e10c java -jar /jenkins-cli.jar -s http://172.17.0.2:8080/ create-credentials domain="global" scope="GLOBAL" id="Gitlab_token" secret="glpat-aJLF5Qs-PZixYmz9My82" description="Gitlab_token" credentials="com.cloudbees.plugins.credentials.impl.StringCredentialsImpl"
+
+
+
+sudo docker exec -u root 9c6b6fd9e10c java -jar /jenkins-cli.jar -s http://172.17.0.2:8080/ groovy /home/ubuntu/create_gitlab_credential.groovy
+
+
+sudo docker exec -u root 9c6b6fd9e10c java -jar /jenkins-cli.jar -s http://172.17.0.2:8080/ create-credentials domain="global" scope="GLOBAL" id="Gitlab_token" secret="glpat-aJLF5Qs-PZixYmz9My82" description="Gitlab_token" credentials="com.cloudbees.plugins.credentials.impl.StringCredentialsImpl"
+
+
+
+
+sudo docker exec -u root 9c6b6fd9e10c java -jar /jenkins-cli.jar -s http://172.17.0.2:8080/ groovy /home/ubuntu/create_gitlab_credential.groovy
+
+
+
+
+curl -X POST 'http://saranya:saranya@http://54.227.208.165:8080/credentials/store/system/domain/_/createCredentials' \
+--data-urlencode 'json={
+  "": "0",
+  "credentials": {
+    "scope": "GLOBAL",
+    "id": "Gitlab_token",
+    "description": "Gitlab_token",
+    "secret": "glpat-aJLF5Qs-PZixYmz9My82",
+    "$class": "org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl"
+  }
+}'
+
+ccbbb76802d90ec7af9ede94cafc00dfc01986b542f59ef82cd11a54b0f9e501
+
+
+
+
+
+
+
+
+curl 'http://saranya:saranya@54.227.208.165:8080/crumbIssuer/api/xml' \
+--user saranya:saranya
+
+
+
+
+
+
+curl -X POST 'http://saranya:saranya@54.227.208.165:8080/credentials/store/system/domain/_/newCredentials' \
+--data-urlencode 'json={
+  "": "0",
+  "credentials": {
+    "scope": "GLOBAL",
+    "id": "Gitlab_token",
+    "description": "Gitlab_token",
+    "secret": "glpat-aJLF5Qs-PZixYmz9My82",
+    "$class": "org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl"
+  }
+}' \
+--header "Jenkins-Crumb: 95a9dd47e418c8c2cf3ffa2094edbdb806ca22704ea354a429a5dbf4f7f7db52"
+
+
+
+
+curl -v -X GET http://54.227.208.165:8080/crumbIssuer/api/json --user saranya:saranya
+
+
+curl 'http://saranya:saranya@54.227.208.165:8080/crumbIssuer/api/xml' \
+--user saranya:saranya
+
+
+
+
+
+
+curl -X POST 'http://saranya:saranya@54.227.208.165:8080/manage/credentials/store/system/domain/_/newCredentials' \
+--data-urlencode 'json={
+  "": "0",
+  "credentials": {
+    "scope": "GLOBAL",
+    "id": "Gitlab_token",
+    "description": "Gitlab_token",
+    "secret": "glpat-aJLF5Qs-PZixYmz9My82",
+    "$class": "org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl"
+  }
+}' \
+--header "Jenkins-Crumb: 5571970b48e1ee0568a35a0a78ff7c267092a959482a4e7470168ecbf0625933"
+
+
+sudo docker exec -u root 9c6b6fd9e10c java -jar /jenkins-cli.jar -s http://172.17.0.2:8080/ install-plugin gitlab-plugin
+
+
+sudo docker exec -u root 9c6b6fd9e10c java -jar /jenkins-cli.jar -s http://172.17.0.2:8080/ createCredentials \
+usernameAndPassword -username "gitlab_api_token" -password "glpat-aJLF5Qs-PZixYmz9My82" \
+-description "GitLab API Token" -id "Gitlab_token" -domain "global"
+
+
+
+http://54.227.208.165:8080/credentials/store/system/domain/_/api/xml?tree=credentials[id]
+
+
+
+
+
+
+
+
+
+
+
+
+<com.cloudbees.plugins.credentials.impl.StringCredentialsImpl>
+  <scope>GLOBAL</scope>
+  <id>Gitlab_token</id>
+  <description>GitLab API Token</description>
+  <secret>glpat-aJLF5Qs-PZixYmz9My82</secret>
+</com.cloudbees.plugins.credentials.impl.StringCredentialsImpl>
+
+
+
+curl -X POST -H "Content-Type: application/xml" -d @credential.xml \
+http://54.227.208.165:8080/credentials/store/system/domain/_/createCredentials
+
+
+sudo docker run -d --restart always -p 8080:8080 -p 50000:50000 -v /home/ubuntu/jenkins_data:/var/jenkins_home --name jenkins my-custom-jenkins
+
+
+sudo docker exec -u root 656e811d7a74 java -jar /jenkins-cli.jar -s http://172.17.0.2:8080/ install-plugin gitlab-plugin
+
+
+sudo docker exec -u root jenkins apt-get install -y nano
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

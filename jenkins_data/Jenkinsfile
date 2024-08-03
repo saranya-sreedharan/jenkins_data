@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Code checkout') {
+            steps {
+                echo 'Code checkout from the repository'
+                git credentialsId: 'gitlab-id', url: 'https://gitlab.com/practice-group9221502/jenkins-project.git', branch: 'dev'
+            }
+        }
+
+        stage('Navigate to project directory') {
+            steps {
+                echo 'Navigating to project directory'
+                dir('jenkins-project') {
+                    echo 'Inside jenkins-project directory'
+                    // List the files to verify
+                    sh 'ls -l'
+                }
+            }
+        }
+
+        stage('Copy HTML files') {
+            environment {
+                REMOTE_HOST = '174.129.187.45'
+                REMOTE_USERNAME = 'ubuntu'
+                SSH_KEY = credentials('SSH_KEY')
+            }
+
+            steps {
+                echo 'Copying HTML files to remote machine'
+                sh '''
+                    scp -i $SSH_KEY jenkins-project/*.html $REMOTE_USERNAME@$REMOTE_HOST:/home/home/json_data_folder/
+                '''
+            }
+        }
+    }
+}

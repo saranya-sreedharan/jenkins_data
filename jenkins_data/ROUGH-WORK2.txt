@@ -1,0 +1,42 @@
+
+
+sudo apt update
+
+sudo apt install docker.io -y
+
+
+# Use the official Jenkins LTS image as the base image
+FROM jenkins/jenkins:lts
+
+# Expose ports for Jenkins web UI and agent communication
+EXPOSE 8080 50000
+
+# Set the user and group IDs to root
+USER root
+
+# Set up a volume to persist Jenkins data
+VOLUME /var/jenkins_home
+
+# Set up the default command to run Jenkins with the desired JVM options
+CMD ["java", "-Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PROTECTION=true", "-jar", "/usr/share/jenkins/jenkins.war"]
+
+
+sudo docker build -t myjenkins .
+
+
+sudo docker run -d \
+  -p 8080:8080 \
+  -p 50000:50000 \
+  -v /home/ubuntu/jenkins_data:/var/jenkins_home \
+  --name jenkins \
+  --restart always \
+  -e JAVA_OPTS="-Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PROTECTION=true" \
+  myjenkins || error_exit "Failed to run Jenkins container."
+
+
+sudo docker exec -u root jenkins wget "http://172.17.0.2:8080/jnlpJars/jenkins-cli.jar"
+sudo docker exec -u root 01cdf63ba280 java -jar /jenkins-cli.jar -s http://172.17.0.2:8080/ install-plugin gitlab-plugin
+
+sudo docker run -d -p 8080:8080 -p 50000:50000 -v /home/ubuntu/jenkins_data:/var/jenkins_home --name jenkins --restart always jenkins/jenkins:lts
+
+sudo docker run -d --restart always -p 8080:8080 -p 50000:50000 -v /home/ubuntu/jenkins_data:/var/jenkins_home --name jenkins my-custom-jenkins || error_exit "Failed to run Jenkins container."

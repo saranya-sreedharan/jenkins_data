@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Code checkout from the repository'
+                git credentialsId: 'gitlab-id', url: 'https://gitlab.com/practice-group9221502/jenkins-project.git', branch: 'dev'
+            }
+        }
+        
+        stage('Transfer HTML File') {
+            steps {
+                script {
+                    // List files to verify the context
+                    sh 'ls -a'
+                    
+                    // Find HTML file
+                    def htmlFile = sh(returnStdout: true, script: 'find . -name "*.html"').trim()
+                    
+                    // Transfer the HTML file to another machine via SSH
+                    sh "scp -i /var/jenkins_home/workspace/mn-serviceproviders-website/ec2_pemkey.pem \"$htmlFile\" ubuntu@44.204.31.99:/home/ubuntu/"
+                }
+            }
+        }
+    }
+}
